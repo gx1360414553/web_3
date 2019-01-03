@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.1.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd"
+	default-lazy-init="default">
+
+	<context:component-scan base-package="com.chanxa.linayi.service" />
+	<context:component-scan base-package="com.chanxa.linayi.aspect" />
+	<context:component-scan base-package="com.chanxa.linayi.populator" />
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+
+	<bean id="propertyConfigurer" 
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" >
+			<bean class="org.springframework.core.io.FileSystemResource">
+				<constructor-arg>
+					<bean class="com.chanxa.linayi.common.util.Configuration" factory-method="getConfigFile"></bean>
+				</constructor-arg>
+			</bean>
+		</property>
+		<property name="fileEncoding" value="UTF-8" />
+	</bean>
+	<bean id="dataSource"  class="com.mchange.v2.c3p0.ComboPooledDataSource" abstract="true" destroy-method="close" >
+		<property name="driverClass" value="${jdbc.driver}" />
+		<property name="maxPoolSize" value="${jdbc.maxPoolSize}" />
+		<property name="minPoolSize" value="${jdbc.minPoolSize}" />
+		<property name="initialPoolSize" value="${jdbc.initialPoolSize}" />
+		<!-- 当连接池中的连接耗尽的时候c3p0一次同时获取的连接数 -->
+		<property name="acquireIncrement" value="${jdbc.acquireIncrement}" />
+		<!--最大空闲时间,使用则连接被丢弃。若为0则永不丢弃(单位秒) -->
+		<property name="maxIdleTime" value="${jdbc.maxIdleTime}" />
+		<!-- 检查连接池中的空闲连接(单位秒) -->
+		<property name="idleConnectionTestPeriod" value="${jdbc.idleConnectionTestPeriod}" />
+		<!-- 连接池用完时,等待获取新连接的时间 (毫秒) -->
+		<property name="checkoutTimeout" value="${jdbc.acquireCheckoutTimeout}" />
+	</bean>
+	
+		<!--  分库的表所在数据源 -->
+		<bean id="dataSource1" parent="dataSource" lazy-init="true">
+			<property name="jdbcUrl" value="${dataSource1.jdbcUrl}" />
+			<property name="user" value="${dataSource1.user}" />
+			<property name="password" value="${dataSource1.password}" />
+		</bean>
+		<bean id="dataSource2" parent="dataSource" lazy-init="true">
+			<property name="jdbcUrl" value="${dataSource2.jdbcUrl}" />
+			<property name="user" value="${dataSource2.user}" />
+			<property name="password" value="${dataSource2.password}" />
+		</bean>
+		<bean id="dataSource3" parent="dataSource" lazy-init="true">
+			<property name="jdbcUrl" value="${dataSource3.jdbcUrl}" />
+			<property name="user" value="${dataSource3.user}" />
+			<property name="password" value="${dataSource3.password}" />
+		</bean>
+		<!--  主数据源(没有分库的表所在数据源) -->
+		<bean id="masterDataSource" parent="dataSource" lazy-init="true">
+			<property name="jdbcUrl" value="${jdbc.url}" />
+			<property name="user" value="${jdbc.username}" />
+			<property name="password" value="${jdbc.password}" />
+		</bean>
+		
+		<bean id="dynamicDataSource" class="cn.uncode.dal.datasource.DynamicDataSource">
+		<property name="slaveDataSources">
+			<map key-type="java.lang.String">
+				
+				<entry key="dataSource1" value-ref="dataSource1" />
+				<entry key="dataSource2" value-ref="dataSource2" />
+				<entry key="dataSource3" value-ref="dataSource3" />
+					
+			</map>
+		</property>
+		<property name="masterDataSource" ref="masterDataSource" />
+		<property name="standbyDataSource" ref="masterDataSource" />
+	</bean>
+	
+	<bean id="transactionManager" class="cn.uncode.dal.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dynamicDataSource"></property>
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+	
+	<!-- 拦截器 -->
+	<bean id="pageInterceptor" class="com.chanxa.linayi.common.util.PageInterceptor">
+		<property name="databaseType" value="mysql" />
+	</bean>
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="plugins">
+			<list>
+				<ref bean="pageInterceptor" />
+			</list>
+		</property>
+			<property name="dataSource" ref="dynamicDataSource" />
+		<property name="configLocation" value="classpath:conf/linayi-sqlmap.xml"></property>
+	</bean>
+
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory" />
+	</bean>
+	
+	<bean id="defaultSqlSession" class="com.chanxa.linayi.common.util.DefaultSqlSession">
+		<property name="sqlSessionTemplate" ref="sqlSessionTemplate" />
+	</bean>
+		<bean id="baseSqlSession" class="com.chanxa.linayi.common.util.BaseSqlSession">
+			<property name="sqlSessionTemplate" ref="sqlSessionTemplate" />
+		</bean>
+		<!-- 注册唯一主键调用客户端 -->
+		<!--<bean id="rpcClientContext" class="com.chanxa.linayi.common.rpc.RpcClientContext">-->
+			<!--<property name="rpcUrl" value="${framework.identity.rpc.url}"/>-->
+		<!--</bean>-->
+	
+	
+	<bean id="dictionaryDao" class="com.chanxa.dict.db.DictionaryDao"
+		init-method="init">
+		<property name="sqlSession" ref="sqlSessionTemplate"></property>
+		<property name="configure">
+			<bean class="com.chanxa.linayi.common.util.DictConfig"></bean>
+		</property>
+	</bean>
+	
+	<bean id="redisTemplate" class="com.tuya.redis.RedisTemplate">
+		<property name="redisFactory"  ref="redisFactory"/>
+	</bean>
+	
+	<bean id="redisFactory" class="com.tuya.redis.RedisFactory">
+		<property name="configuration" ref="redisConfig"/>
+	</bean>
+	
+	<bean id="redisConfig" class="com.tuya.redis.config.RedisConfiguration">
+		<property name="host" value="${redis.host}" />
+		<property name="port" value="${redis.port}"/>
+		<property name="password" value="${redis.password}"/>
+		<property name="maxTotal" value="${redis.maxTotal}"/>
+		<property name="maxIdle" value="${redis.maxIdle}"/>
+		<property name="timeOut" value="${redis.timeOut}"/>
+	</bean>
+	
+	<bean class="com.chanxa.linayi.common.util.ApplicationContextUtils"></bean>
+	<import resource="classpath:conf/linayi-quartz.xml" />
+	
+</beans>

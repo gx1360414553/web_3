@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+	</settings>
+	
+	<mappers>
+		<mapper resource="com\chanxa\linayi\dao\system\AdminAccount.xml"/>
+		<mapper resource="com\chanxa\linayi\dao\system\AdminAccountPrivilege.xml"/>
+		<mapper resource="com\chanxa\linayi\dao\system\Privilege.xml"/>
+		<mapper resource="com\chanxa\linayi\dao\system\Role.xml"/>
+		<mapper resource="com\chanxa\linayi\dao\system\Feedback.xml"/>
+		<mapper resource="com\chanxa\linayi\dao\logs\ApiLogs.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\system\Accept.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\system\Advert.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\system\AdvertItem.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\order\AfterSale.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\goods\AttrValue.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\goods\Attribute.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\user\Bank.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\user\BankCard.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\goods\Brand.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\goods\BrandProduction.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\community\Car.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\goods\Category.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\goods\CategoryBrand.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\goods\CategoryGoods.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\community\Community.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\community\CommunityAccount.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\community\CommunityEarnings.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\community\CommunityLocation.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\community\CommunitySupermarket.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\community\Driver.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\order\Evaluate.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\goods\Goods.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\goods\GoodsAttribute.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\goods\GoodsImage.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\goods\GoodsRecommend.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\goods\GoodsSku.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\system\Message.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\task\OrderSection.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\user\PasswordLog.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\goods\Production.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\goods\ProductionAttribute.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\user\Recharge.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\community\Route.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\community\RouteCommunity.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\user\ShoppingCar.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\goods\SkuAttribute.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\goods\SkuCommunity.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\goods\SkuLocation.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\goods\SkuSupermarketTag.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\goods\SortingCategory.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\goods\SortingCategoryGoods.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\community\Supermarket.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\goods\Tag.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\order\TempOrderSku.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\user\User.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\user\UserLocation.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\flower\Box.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\user\Browse.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\community\CommunityEarningsItem.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\community\Village.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\goods\Correct.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\task\DeliverySku.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\task\DeliveryTask.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\user\Earnings.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\user\EarningsItem.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\user\Favorite.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\order\Order.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\order\OrderSku.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\flower\OrderStore.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\flower\PackingSku.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\task\ProcurementOrder.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\task\ProcurementSku.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\task\ProcurementTask.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\goods\SkuSupermarket.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\flower\SortingSku.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\task\UserDelivery.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\user\UserOrder.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\user\UserOrder.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\task\UserProcurement.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\system\Options.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\quartz\quartz.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\system\Area.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\system\DataDictionary.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\user\UserProfitDetail.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\user\UserProfitDay.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\user\UserCorrect.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\community\CommunityProfitDetail.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\community\CommunityProfitDay.xml"/>
+				<mapper resource="com\chanxa\linayi\dao\community\CommunityRunDay.xml"/>
+	</mappers>
+</configuration>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xmlns:p="http://www.springframework.org/schema/p"  
+    xmlns:mvc="http://www.springframework.org/schema/mvc"  
+    xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:util="http://www.springframework.org/schema/util"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd  
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd  
+            http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd  
+            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.1.xsd">
+        
+        <bean id="procurementTaskTimerJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		    <property name="jobClass"  value="com.chanxa.linayi.timer.ProcurementTaskTimer"/>
+		</bean>
+		
+        <bean id="correctTimerJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		    <property name="jobClass"  value="com.chanxa.linayi.timer.CorrectTimer"/>
+		</bean>
+		
+        <bean id="goodsClosingTimerJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		    <property name="jobClass"  value="com.chanxa.linayi.timer.GoodsClosingTimer"/>
+		</bean>
+        <bean id="priceCorrectEarningsTimerJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		    <property name="jobClass"  value="com.chanxa.linayi.timer.PriceCorrectEarningsTimer"/>
+		</bean>
+		<bean id="acceptCorrectTimerJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		    <property name="jobClass"  value="com.chanxa.linayi.timer.AcceptCorrectTimer"/>
+		</bean>
+		<bean id="cleanDeBindSupermarektStatusTimerJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		    <property name="jobClass"  value="com.chanxa.linayi.timer.CleanDeBindSupermarektStatusTimer"/>
+		</bean>
+		
+		<bean id="correctTimerCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		    <property name="jobDetail" ref="correctTimerJobDetail"/>
+		    <property name="startDelay" value="10000"></property>
+		    <property name="cronExpression" value="${correctTimerCronExpression}"/>
+		</bean>
+		<bean id="goodsClosingTimerCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		    <property name="jobDetail" ref="goodsClosingTimerJobDetail"/>
+		    <property name="startDelay" value="10000"></property>
+		    <property name="cronExpression" value="${goodsClosingTimerCronExpression}"/>
+		</bean>
+		<bean id="priceCorrectEarningsTimerCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		    <property name="jobDetail" ref="priceCorrectEarningsTimerJobDetail"/>
+		    <property name="startDelay" value="10000"></property>
+		    <property name="cronExpression" value="${priceCorrectEarningsTimerExpression}"/>
+		</bean>
+		<bean id="acceptCorrectTimerCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		    <property name="jobDetail" ref="acceptCorrectTimerJobDetail"/>
+		    <property name="startDelay" value="10000"></property>
+		    <property name="cronExpression" value="${acceptCorrectTimerExpression}"/>
+		</bean>
+		<bean id="cleanDeBindSupermarektStatusCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		    <property name="jobDetail" ref="cleanDeBindSupermarektStatusTimerJobDetail"/>
+		    <property name="startDelay" value="10000"></property>
+		    <property name="cronExpression" value="${cleanDeBindSupermarektStatusCronExpression}"/>
+		</bean>
+		
+		<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+			<property name="triggers">
+				<list>
+<!-- 			            <ref bean="correctTimerCronTrigger"/>  -->
+			            <ref bean="goodsClosingTimerCronTrigger"/> 
+			            <ref bean="priceCorrectEarningsTimerCronTrigger"/> 
+			            <ref bean="acceptCorrectTimerCronTrigger"/> 
+			            <ref bean="cleanDeBindSupermarektStatusCronTrigger"/>
+			    </list>
+			</property>
+			 <property name="quartzProperties">
+            	<props>
+                <!-- 主要是这个参数 -->
+                <prop key="org.quartz.scheduler.skipUpdateCheck">true</prop>
+            </props>
+        </property>     
+		</bean>
+		
+		<!-- 动态创建定时器开关 -->
+		<bean class="com.chanxa.linayi.timer.TaskTimerGenerator"></bean>
+
+</beans>
